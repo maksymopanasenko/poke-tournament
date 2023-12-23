@@ -20,9 +20,9 @@ type Story = StoryObj<typeof meta>
 export const Base: Story = {
     args: {
         options: [
-            { id: 1, name: 'Option 1' },
-            { id: 2, name: 'Option 2' },
-            { id: 3, name: 'Option 3' },
+            { id: 1, name: 'Option 1', sprites: 'image.png' },
+            { id: 2, name: 'Option 2', sprites: 'image.png' },
+            { id: 3, name: 'Option 3', sprites: 'image.png' },
         ],
     }
 }
