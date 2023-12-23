@@ -17,9 +17,7 @@ const formValidationSchema = Yup.object().shape({
             Yup.object().shape({
                 id: Yup.number().required('ID is required'),
                 name: Yup.string().required('Name is required'),
-                sprites: Yup.array()
-                    .of(Yup.string().required('Sprite is required'))
-                    .required('Sprites are required'),
+                sprites: Yup.string().required('Sprites is required'),
             })
         ),
 });

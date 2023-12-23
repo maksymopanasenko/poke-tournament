@@ -3,12 +3,12 @@ import fetchData from '../../helpers/fetchData';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import CustomSelect from '../CustomSelect/CustomSelect';
 import formValidationSchema from '../../validation/formValidationSchema';
-import SpitesHolder from '../SpitesHolder/SpitesHolder';
+import SpitesHolder from '../SpritesHolder/SpritesHolder';
 
 type Pokemon = Array<{
     id: number;
     name: string;
-    sprites: string[];
+    sprites: string;
 }>;
 
 interface InitialValues {
@@ -44,12 +44,9 @@ useEffect(() => {
             pokemons.push(...chunkedPokemons);
         }
 
-        const pokemonsSets = pokemons.map(pokemon => {
-            const spriteUrls = Object.entries(pokemon?.sprites);
-            const validSprites: string[] = spriteUrls.filter(([key, value]) => value && typeof value === 'string' && !value.includes('female') && !value.includes('shiny')).map(([key, value]) => value as string).reverse();
-
-            return { name: pokemon.name, id: pokemon.id, sprites: validSprites };
-        });
+        const pokemonsSets = pokemons.map(pokemon => {            
+            return { name: pokemon.name, id: pokemon.id, sprites: pokemon?.sprites.front_default };
+        });        
 
         setData(pokemonsSets);
     };

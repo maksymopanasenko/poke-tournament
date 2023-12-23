@@ -5,6 +5,7 @@ type CustomSelectTypes = {
     options: Array<{
         id: number;
         name: string;
+        sprites: string;
     }> | null;
 }
 
@@ -17,6 +18,7 @@ interface FormValues {
 interface ValueTypes {
     id: number;
     name: string;
+    sprites: string;
 }
 
 const CustomSelect = ({ options }: CustomSelectTypes) => {
@@ -50,8 +52,7 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
         }
 
         const handler = (e: MouseEvent) => {
-            if (!(e.target as HTMLElement)?.closest('#select') && !(e.target as HTMLElement)?.closest('#btn')) {
-
+            if (!(e.target as HTMLElement)?.closest('#delete') && !(e.target as HTMLElement)?.closest('#select') && !(e.target as HTMLElement)?.closest('#btn')) {
                 setshowOptions(false);
                 setSearchTerm("");
             }
@@ -85,8 +86,9 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
         }
     }, [selectedValue])
 
-    const handleInputClick = () => {
+    const handleInputClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (!options?.length) return;
+        if ((event.target as HTMLElement)?.closest('#delete')) return;
 
         setTimeout(() => {
             setshowOptions(!showOptions);
@@ -109,7 +111,23 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
                 {
                     options ?
                         (<>
-                            <span className="text-xl text-slate-400">Select pokemons</span>
+                            <span className="text-xl text-slate-400 flex gap-1">
+                                {
+                                    values.pokemons.length ? (
+                                        values.pokemons.map((item: ValueTypes) => {
+                                            return <span key={item.id} className="border p-1 text-xs rounded-lg gap-1 flex justify-between items-center">
+                                                {capitalizeName(item.name)}
+                                                <span className='flex justify-end cursor-default bg-gray-200 rounded' onClick={() => setFieldValue('pokemons', values.pokemons.filter((val: { id: number }) => val.id !== item.id))}>
+                                                    <svg id="delete" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-4 h-4">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        })
+                                    ) : "Select pokemons"
+
+                                }
+                            </span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
