@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import fetchData from '../../helpers/fetchData';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import CustomSelect from '../CustomSelect/CustomSelect';
 
 
 type CustomSelectTypes = Array<{
@@ -45,7 +46,7 @@ function EntryForm() {
 
     return (
         <Formik
-            initialValues={{ firstName: '', lastName: '' }}
+            initialValues={{ firstName: '', lastName: '', pokemons: [] }}
             onSubmit={(values, { setSubmitting, resetForm }) => {
                 setTimeout(() => {
                     alert(JSON.stringify(values, null, 2));
@@ -63,6 +64,9 @@ function EntryForm() {
                     <div className="form-group flex flex-col">
                         <Field type="text" className="border-slate-400 border-solid border-2 text-xl rounded p-3 focus:outline-none focus:border-purple-500" name="lastName" placeholder="Your lastname" />
                         <ErrorMessage className='text-center text-rose-500' name="lastName" component="div" />
+                    </div>
+                    <div className="form-group flex flex-col">
+                        <CustomSelect options={data}/>
                     </div>
                     <div className='flex gap-1'>
                         <button type="button" className="text-xl px-2 py-0.5 rounded transition duration-300 ease-in-out border-2 border-transparent hover:border-purple-600  focus:outline-none focus:ring-2 focus:ring-purple-500">
