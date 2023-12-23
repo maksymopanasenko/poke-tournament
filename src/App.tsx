@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import EntryForm from './components/Form/EntryForm'
 
 function App() {
   return (
-    <div>
-      <p>Welcome to Luna Edge technical interview</p>
-    </div>
+    <main className="h-screen w-screen flex justify-center items-center">
+      <EntryForm />
+    </main>
   )
 }
 
