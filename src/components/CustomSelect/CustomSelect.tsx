@@ -27,7 +27,7 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
     } | null>(null);
 
     const { values, setFieldValue } = useFormikContext<FormValues>();
-    
+
     useEffect(() => {
         if (!selectedValue && values.pokemons.length >= 4) {
             setshowOptions(false);
@@ -36,8 +36,8 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
         const handler = (e: MouseEvent) => {
             if (!(e.target as HTMLElement)?.closest('#select') && !(e.target as HTMLElement)?.closest('#btn')) {
                 console.log(e.target);
-                
-                setshowOptions(false);             
+
+                setshowOptions(false);
             }
         };
         window.addEventListener("click", handler);
@@ -90,7 +90,7 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
     }
 
     return (
-        <div id="select" className="border-purple-700 border-solid border rounded relative">
+        <div id="select" tabIndex={0} className="border-slate-400 focus:outline-none focus:border-purple-500 border-solid border-2 rounded relative">
             <div className="flex justify-between items-center p-3 cursor-pointer w-full h-full" onClick={handleInputClick}>
                 {
                     options ?

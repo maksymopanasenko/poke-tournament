@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import fetchData from '../../helpers/fetchData';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import CustomSelect from '../CustomSelect/CustomSelect';
+import formValidationSchema from '../../validation/formValidationSchema';
 
 
 type CustomSelectTypes = Array<{
@@ -47,6 +48,7 @@ function EntryForm() {
     return (
         <Formik
             initialValues={{ firstName: '', lastName: '', pokemons: [] }}
+            validationSchema={formValidationSchema}
             onSubmit={(values, { setSubmitting, resetForm }) => {
                 setTimeout(() => {
                     alert(JSON.stringify(values, null, 2));
@@ -67,6 +69,7 @@ function EntryForm() {
                     </div>
                     <div className="form-group flex flex-col">
                         <CustomSelect options={data}/>
+                        <ErrorMessage className='text-center text-rose-500' name="pokemons" component="div" />
                     </div>
                     <div className='flex gap-1'>
                         <button type="button" className="text-xl px-2 py-0.5 rounded transition duration-300 ease-in-out border-2 border-transparent hover:border-purple-600  focus:outline-none focus:ring-2 focus:ring-purple-500">
