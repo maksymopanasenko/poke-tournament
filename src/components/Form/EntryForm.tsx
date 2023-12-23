@@ -3,74 +3,89 @@ import fetchData from '../../helpers/fetchData';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import CustomSelect from '../CustomSelect/CustomSelect';
 import formValidationSchema from '../../validation/formValidationSchema';
+import SpitesHolder from '../SpitesHolder/SpitesHolder';
 
-
-type CustomSelectTypes = Array<{
+type Pokemon = Array<{
     id: number;
     name: string;
     sprites: string[];
 }>;
 
+interface InitialValues {
+    firstName: string;
+    lastName: string;
+    pokemons: Pokemon;
+}
+
 function EntryForm() {
-    const [data, setData] = useState<CustomSelectTypes | null>(null);
+    const [data, setData] = useState<Pokemon | null>(null);
 
-    useEffect(() => {
-        const getPokemonData = async () => {
-            const result = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
-            const chunkSize = 50;
-            const pokemons = [];
+    const initialValues:InitialValues  = {
+        firstName: '',
+        lastName: '',
+        pokemons: []
+    }
 
-            for (let i = 0; i < result.results.length; i += chunkSize) {
-                const chunk = result.results.slice(i, i + chunkSize);
+useEffect(() => {
+    const getPokemonData = async () => {
+        const result = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
+        const chunkSize = 50;
+        const pokemons = [];
 
-                const chunkedPokemons = await Promise.all(
-                    chunk.map(async ({ url }: { url: string }) => {
-                        return await fetchData(url);
-                    })
-                );
+        for (let i = 0; i < result.results.length; i += chunkSize) {
+            const chunk = result.results.slice(i, i + chunkSize);
 
-                pokemons.push(...chunkedPokemons);
-            }
+            const chunkedPokemons = await Promise.all(
+                chunk.map(async ({ url }: { url: string }) => {
+                    return await fetchData(url);
+                })
+            );
 
-            const pokemonsSets = pokemons.map(pokemon => {
-                const spriteUrls = Object.entries(pokemon?.sprites);
-                const validSprites: string[] = spriteUrls.filter(([key, value]) => value && typeof value === 'string' && !value.includes('female') && !value.includes('shiny')).map(([key, value]) => value as string).reverse();
+            pokemons.push(...chunkedPokemons);
+        }
 
-                return { name: pokemon.name, id: pokemon.id, sprites: validSprites };
-            });
+        const pokemonsSets = pokemons.map(pokemon => {
+            const spriteUrls = Object.entries(pokemon?.sprites);
+            const validSprites: string[] = spriteUrls.filter(([key, value]) => value && typeof value === 'string' && !value.includes('female') && !value.includes('shiny')).map(([key, value]) => value as string).reverse();
 
-            setData(pokemonsSets);
-        };
+            return { name: pokemon.name, id: pokemon.id, sprites: validSprites };
+        });
 
-        getPokemonData();
-    }, []);
+        setData(pokemonsSets);
+    };
 
-    return (
-        <Formik
-            initialValues={{ firstName: '', lastName: '', pokemons: [] }}
-            validationSchema={formValidationSchema}
-            onSubmit={(values, { setSubmitting, resetForm }) => {
-                setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                    resetForm();
-                }, 400);
-            }}
-        >
-            {({ isSubmitting }) => (
-                <Form className="flex flex-col gap-2 w-full" >
-                    <div className="form-group flex flex-col">
-                        <Field type="text" className="border-slate-400 border-solid border-2 text-xl rounded p-3 focus:outline-none focus:border-purple-500" name="firstName" placeholder="Your name" />
-                        <ErrorMessage className='text-center text-rose-500' name="firstName" component="div" />
-                    </div>
-                    <div className="form-group flex flex-col">
-                        <Field type="text" className="border-slate-400 border-solid border-2 text-xl rounded p-3 focus:outline-none focus:border-purple-500" name="lastName" placeholder="Your lastname" />
-                        <ErrorMessage className='text-center text-rose-500' name="lastName" component="div" />
-                    </div>
-                    <div className="form-group flex flex-col">
-                        <CustomSelect options={data}/>
-                        <ErrorMessage className='text-center text-rose-500' name="pokemons" component="div" />
-                    </div>
+    getPokemonData();
+}, []);
+
+return (
+    <Formik
+        initialValues={initialValues}
+        validationSchema={formValidationSchema}
+        onSubmit={(values, { setSubmitting, resetForm }) => {
+            setTimeout(() => {
+                alert(JSON.stringify(values, null, 2));
+                setSubmitting(false);
+                resetForm();
+            }, 400);
+        }}
+    >
+        {({ isSubmitting, values }) => (
+            <Form className="flex flex-col gap-2 w-full" >
+                <div className="form-group flex flex-col">
+                    <Field type="text" className="border-slate-400 border-solid border-2 text-xl rounded p-3 focus:outline-none focus:border-purple-500" name="firstName" placeholder="Your name" />
+                    <ErrorMessage className='text-center text-rose-500' name="firstName" component="div" />
+                </div>
+                <div className="form-group flex flex-col">
+                    <Field type="text" className="border-slate-400 border-solid border-2 text-xl rounded p-3 focus:outline-none focus:border-purple-500" name="lastName" placeholder="Your lastname" />
+                    <ErrorMessage className='text-center text-rose-500' name="lastName" component="div" />
+                </div>
+                <div className="form-group flex flex-col">
+                    <CustomSelect options={data} />
+                    <ErrorMessage className='text-center text-rose-500' name="pokemons" component="div" />
+                </div>
+
+                <div className='flex justify-between gap-4 items-center'>
+                    <SpitesHolder choosedPokemons={values?.pokemons} />
                     <div className='flex gap-1'>
                         <button type="button" className="text-xl px-2 py-0.5 rounded transition duration-300 ease-in-out border-2 border-transparent hover:border-purple-600  focus:outline-none focus:ring-2 focus:ring-purple-500">
                             Cancel
@@ -79,10 +94,11 @@ function EntryForm() {
                             Save
                         </button>
                     </div>
-                </Form>
-            )}
-        </Formik>
-    )
+                </div>
+            </Form>
+        )}
+    </Formik>
+)
 }
 
 export default EntryForm;
