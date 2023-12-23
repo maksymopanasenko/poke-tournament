@@ -31,34 +31,43 @@ function EntryForm({ onClose, onGetData }: ModalProps) {
         lastName: '',
         pokemons: []
     }
-
     useEffect(() => {
         const getPokemonData = async () => {
-            const result = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
-            const chunkSize = 50;
-            const pokemons = [];
+            try {
+                const result = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
+                const chunkSize = 50;
+                const pokemons = [];
 
-            for (let i = 0; i < result.results.length; i += chunkSize) {
-                const chunk = result.results.slice(i, i + chunkSize);
+                for (let i = 0; i < result.results.length; i += chunkSize) {
+                    const chunk = result.results.slice(i, i + chunkSize);
 
-                const chunkedPokemons = await Promise.all(
-                    chunk.map(async ({ url }: { url: string }) => {
-                        return await fetchData(url);
-                    })
-                );
+                    const chunkedPokemons = await Promise.all(
+                        chunk.map(async ({ url }: { url: string }) => {
+                            try {
+                                return await fetchData(url);
+                            } catch (error) {
+                                console.error(`Failed to fetch Pokemon: ${url}`, error);
+                                return null;
+                            }
+                        })
+                    );
 
-                pokemons.push(...chunkedPokemons);
+                    pokemons.push(...chunkedPokemons.filter(pokemon => pokemon !== null));
+                }
+
+                const pokemonsSets = pokemons.map(pokemon => {
+                    return { name: pokemon.name, id: pokemon.id, sprites: pokemon?.sprites.front_default };
+                });
+
+                setData(pokemonsSets);
+            } catch (error) {
+                console.error('Failed to fetch Pokemon data:', error);
             }
-
-            const pokemonsSets = pokemons.map(pokemon => {
-                return { name: pokemon.name, id: pokemon.id, sprites: pokemon?.sprites.front_default };
-            });
-
-            setData(pokemonsSets);
         };
 
         getPokemonData();
     }, []);
+
 
     return (
         <Formik
@@ -88,8 +97,8 @@ function EntryForm({ onClose, onGetData }: ModalProps) {
                     <div className='flex justify-between gap-4 items-center'>
                         <SpitesHolder choosedPokemons={values?.pokemons} />
                         <div className='flex gap-1'>
-                            <Button text='Cancel' type="button" onClick={onClose} classes='text-xl px-2 py-0.5 rounded transition duration-300 ease-in-out border-2 border-transparent hover:border-purple-600  focus:outline-none focus:ring-2 focus:ring-purple-500'/>
-                            <Button text='Save' type="submit" isSubmitting={isSubmitting} classes='bg-purple-500 text-xl text-white px-4 py-0.5 rounded transition duration-300 ease-in-out hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500'/>
+                            <Button text='Cancel' type="button" onClick={onClose} classes='text-xl px-2 py-0.5 rounded transition duration-300 ease-in-out border-2 border-transparent hover:border-purple-600  focus:outline-none focus:ring-2 focus:ring-purple-500' />
+                            <Button text='Save' type="submit" isSubmitting={isSubmitting} classes='bg-purple-500 text-xl text-white px-4 py-0.5 rounded transition duration-300 ease-in-out hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500' />
                         </div>
                     </div>
                 </Form>
