@@ -15,9 +15,8 @@ const formValidationSchema = Yup.object().shape({
         .test('is-four-pokemons', 'You have to choose 4 pokemons', (value) => value?.length === 4)
         .of(
             Yup.object().shape({
-                id: Yup.number().required('ID is required'),
-                name: Yup.string().required('Name is required'),
-                sprites: Yup.string().required('Sprites is required'),
+                id: Yup.number(),
+                name: Yup.string(),
             })
         ),
 });

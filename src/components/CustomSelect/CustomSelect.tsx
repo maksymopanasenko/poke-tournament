@@ -1,5 +1,6 @@
 import { useFormikContext } from "formik";
 import { ChangeEvent, useEffect, useState } from "react";
+import { capitalizeName } from "../../helpers/capitalize";
 
 type CustomSelectTypes = {
     options: Array<{
@@ -99,10 +100,6 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
         setSelectedValue(currentOption);
     };
 
-    const capitalizeName = (name: string) => {
-        return name[0].toUpperCase() + name.slice(1);
-    }
-
     const renderedOptions = searchResults ?? options;
 
     return (
@@ -167,7 +164,7 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
                         {renderedOptions?.map((option) => (
                             <div
                                 key={option.id}
-                                className={`text-center text-xl cursor-pointer px-6 py-4 bg-violet-100 border-b border-solid border-purple-400 hover:bg-violet-300 ${values.pokemons.map((val: ValueTypes) => val.name).includes(option.name) ? "text-orange-600 hover:text-orange-600" : " hover:text-white"}`}
+                                className={`text-center text-xl cursor-pointer px-6 py-4 bg-violet-100 border-b border-solid border-purple-400 text-gray-700 hover:bg-violet-300 ${values.pokemons.map((val: ValueTypes) => val.name).includes(option.name) ? "text-red-600 hover:text-red-600" : " hover:text-white"}`}
                                 onClick={() => onOptionClick(option)}
                             >
                                 {capitalizeName(option.name)}

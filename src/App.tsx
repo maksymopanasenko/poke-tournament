@@ -10,12 +10,12 @@ function App() {
   }
 
   return (
-    <main className="h-screen w-screen flex justify-center items-center bg-blue-100">
+    <main className="h-screen overflow-auto py-4 w-screen flex justify-center items-center bg-gradient-to-r from-purple-200 via-sky-200 to-green-200">
       {
         isOpen ? (
           <Modal onClose={handleOpenModal} />
         ) : (
-          <div className='text-center w-1/2 bg-violet-200 p-4 rounded-md shadow-lg'>
+          <div className='text-center w-1/2 bg-violet-300 p-4 rounded-md shadow-lg'>
             <h2 className='text-xl mb-4 font-bold w-3/4 mx-auto'>
               🔥🚀 Attention Trainers: Unleash Your Inner Fire at the "Pokémon Showdown Showdown!" 🚀🔥
             </h2>

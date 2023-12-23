@@ -20,9 +20,10 @@ interface InitialValues {
 
 interface ModalProps {
     onClose: MouseEventHandler<HTMLButtonElement>;
+    onGetData: (data: InitialValues) => void;
 }
 
-function EntryForm({ onClose }: ModalProps) {
+function EntryForm({ onClose, onGetData }: ModalProps) {
     const [data, setData] = useState<Pokemon | null>(null);
 
     const initialValues: InitialValues = {
@@ -64,11 +65,9 @@ function EntryForm({ onClose }: ModalProps) {
             initialValues={initialValues}
             validationSchema={formValidationSchema}
             onSubmit={(values, { setSubmitting, resetForm }) => {
-                setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                    resetForm();
-                }, 400);
+                onGetData(values)
+                setSubmitting(false);
+                resetForm();
             }}
         >
             {({ isSubmitting, values }) => (
