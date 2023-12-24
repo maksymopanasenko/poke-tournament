@@ -82,21 +82,26 @@ function EntryForm({ onClose, onGetData }: ModalProps) {
             {({ isSubmitting, values }) => (
                 <Form className="flex flex-col gap-2 w-full" >
                     <div className="form-group flex flex-col">
-                        <Field type="text" className="border-slate-400 border-solid border-2 text-xl rounded p-3 focus:outline-none focus:border-purple-500" name="firstName" placeholder="Your name" />
-                        <ErrorMessage className='text-center text-rose-500' name="firstName" component="div" />
+                        <h5>Name:</h5>
+                        <Field type="text" className="border-slate-400 border-solid border text-xl rounded-lg p-3 my-2 focus:outline-none focus:border-purple-500" name="firstName" placeholder="Your name" />
+                        <ErrorMessage className='text-rose-500' name="firstName" component="div" />
                     </div>
                     <div className="form-group flex flex-col">
-                        <Field type="text" className="border-slate-400 border-solid border-2 text-xl rounded p-3 focus:outline-none focus:border-purple-500" name="lastName" placeholder="Your lastname" />
-                        <ErrorMessage className='text-center text-rose-500' name="lastName" component="div" />
+                        <h5>Lastname:</h5>
+                        <Field type="text" className="border-slate-400 border-solid border text-xl rounded-lg p-3 my-2 focus:outline-none focus:border-purple-500" name="lastName" placeholder="Your lastname" />
+                        <ErrorMessage className='text-rose-500' name="lastName" component="div" />
                     </div>
                     <div className="form-group flex flex-col">
+                        <h5>Available pokemons:</h5>
                         <CustomSelect options={data} />
-                        <ErrorMessage className='text-center text-rose-500' name="pokemons" component="div" />
+                        <ErrorMessage className='text-rose-500' name="pokemons" component="div" />
                     </div>
 
-                    <div className='flex justify-between gap-4 items-center'>
-                        <SpitesHolder choosedPokemons={values?.pokemons} />
-                        <div className='flex gap-1'>
+                    <div className='flex flex-wrap justify-center sm:justify-between gap-4 items-center'>
+                        <div className='mb-2'>
+                            <SpitesHolder choosedPokemons={values?.pokemons} />
+                        </div>
+                        <div className='flex justify-center gap-1'>
                             <Button text='Cancel' type="button" onClick={onClose} classes='text-xl px-2 py-0.5 rounded transition duration-300 ease-in-out border-2 border-transparent hover:border-purple-600  focus:outline-none focus:ring-2 focus:ring-purple-500' />
                             <Button text='Save' type="submit" isSubmitting={isSubmitting} classes='bg-purple-500 text-xl text-white px-4 py-0.5 rounded transition duration-300 ease-in-out hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500' />
                         </div>

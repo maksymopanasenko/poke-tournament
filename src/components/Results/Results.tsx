@@ -16,7 +16,7 @@ function Results({ result }: ResultsProps) {
             <p>You've assembled a powerhouse team of Pokémon!<br/> Get ready to unleash their strengths and dominate the upcoming tournament. May your strategies be sharp, and may victory be yours! Good luck, Trainer!</p>
             <h4 className="text-center text-2xl font-medium text-purple-500 my-4">Your Team</h4>
 
-            <ul className="flex justify-between">
+            <ul className="flex justify-center flex-wrap gap-3">
                 {result.map(pokemon => {
                     return (
                         <li key={pokemon.id} className="text-center bg-gray-800 text-white p-2 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col items-center justify-center w-28">

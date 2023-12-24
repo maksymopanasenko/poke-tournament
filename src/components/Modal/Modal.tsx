@@ -26,7 +26,7 @@ function Modal({ onClose }: ModalProps) {
     }    
 
     return (
-        <div className="w-2/5 p-8 bg-white shadow-lg">
+        <div className="w-full md:w-3/4 lg:w-2/3 xl:w-3/5 2xl:w-2/5 p-4 sm:p-8 bg-white shadow-lg">
             <div className="flex justify-between align-center mb-4">
                 <h2 className="text-2xl">{data?.firstName ? `Congratulations ${data.firstName}!`: "Application form"}</h2>
                 <button onClick={onClose}>

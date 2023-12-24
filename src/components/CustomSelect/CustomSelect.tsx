@@ -103,12 +103,12 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
     const renderedOptions = searchResults ?? options;
 
     return (
-        <div id="select" tabIndex={0} className="border-slate-400 focus:outline-none focus:border-purple-500 border-solid border-2 rounded relative">
+        <div id="select" tabIndex={0} className="border-slate-400 my-2 border-solid border rounded-lg relative focus:outline-none focus:border-purple-500">
             <div className="flex justify-between items-center p-3 cursor-pointer w-full h-full" onClick={handleInputClick}>
                 {
                     options ?
                         (<>
-                            <span className="text-xl text-slate-400 flex gap-1">
+                            <span className="text-xl text-slate-400 flex gap-1 overflow-x-auto">
                                 {
                                     values.pokemons.length ? (
                                         values.pokemons.map((item: ValueTypes) => {
@@ -125,7 +125,7 @@ const CustomSelect = ({ options }: CustomSelectTypes) => {
 
                                 }
                             </span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ml-2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </>) : (
